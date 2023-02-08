@@ -2,12 +2,17 @@ import { Router } from 'express';
 import { v4 as uuid } from 'uuid';
 import { Category } from '../model/Category';
 import { CategoriesRepository } from '../repositories/CategoriesRepository';
+import { CreateCategoryService } from '../services/CreateCategoryService';
+import { ListCategoryService } from '../services/ListCategoryService';
 
 const categoriesRoutes = Router();
 const categoriesRepository = new CategoriesRepository();
 
+
 categoriesRoutes.get('/', (req, res) => {
-  const allCategories = categoriesRepository.list();
+  const listCategoryService = new ListCategoryService(categoriesRepository);
+
+  const allCategories = listCategoryService.execute();
 
   return res.status(201).json(allCategories);
 });
@@ -15,14 +20,9 @@ categoriesRoutes.get('/', (req, res) => {
 categoriesRoutes.post('/', (req, res) => {
   const { name, description } = req.body;
 
+  const createCategoryService = new CreateCategoryService(categoriesRepository);
 
-  const foundCategory = categoriesRepository.findByName(name);
-
-  if(foundCategory) {
-    return res.status(404).json({error: 'You cannot create a category with the same name'});
-  }
-
-  categoriesRepository.create({description, name})
+  createCategoryService.execute({name, description})
 
 
   return res.status(201).send();
