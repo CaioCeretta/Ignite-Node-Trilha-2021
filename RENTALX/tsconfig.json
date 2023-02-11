@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,             
     "esModuleInterop": true,                             
     "skipLibCheck": true,                           
-    "forceConsistentCasingInFileNames": true,            
+    "forceConsistentCasingInFileNames": true,  
   },
   "include": ["src", "../Legacy/CreateCategoryService - antes de mudar para o useCase.ts"]
 }
