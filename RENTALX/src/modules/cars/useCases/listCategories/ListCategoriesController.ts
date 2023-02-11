@@ -8,7 +8,7 @@ class ListCategoriesController {
   handle(req: Request, res: Response) {
 
     const allCategories = this.listCategoriesUseCase.execute();
-  
+   
     return res.status(201).json(allCategories);
   }
 

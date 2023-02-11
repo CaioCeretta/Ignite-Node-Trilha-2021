@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Category } from '../modules/cars/model/Category';
+import multer from 'multer';
 
-import { CategoriesRepository } from '../modules/cars/repositories/implementations/CategoriesRepository';
-import { ListCategoryService } from '../modules/cars/services/ListCategoryService';
+import { importCategoryController } from '../modules/cars/useCases/importCategory';
 import { createCategoryController } from '../modules/cars/useCases/createCategory';
-import { CreateCategoryUseCase } from '../modules/cars/useCases/createCategory/CreateCategoryUseCase';
 import { listCategoriesController } from '../modules/cars/useCases/listCategories';
 
 const categoriesRoutes = Router();
-const categoriesRepository = CategoriesRepository.getInstance();
 
+// Se quiser apenas ler o arquivo, pode passar o multer vazio
+const upload = multer({
+  dest: './tmp',
+})
 
 categoriesRoutes.get('/', (req, res) => {
   return listCategoriesController.handle(req, res);
@@ -19,5 +19,10 @@ categoriesRoutes.get('/', (req, res) => {
 categoriesRoutes.post('/', (req, res) => { 
   return createCategoryController.handle(req, res);
 });
+
+categoriesRoutes.post('/import', upload.single('file'), (req, res) => {
+  return importCategoryController.handle(req, res);
+
+})
 
 export { categoriesRoutes };
