@@ -6,11 +6,11 @@ export class CreateUserController {
 
   async handle(req: Request, res: Response): Promise<Response> {
    
-    const {name, email, username, password, drivers_license} = req.body;
+    const {name, email, password, drivers_license} = req.body;
 
     const createUserUseCase = container.resolve(CreateUserUseCase);
 
-    await createUserUseCase.execute({name, email, username, password, drivers_license});
+    await createUserUseCase.execute({name, email, password, drivers_license});
 
     return res.status(201).send();
 
