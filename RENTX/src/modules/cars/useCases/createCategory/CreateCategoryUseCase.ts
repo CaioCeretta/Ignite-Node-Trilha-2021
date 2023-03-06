@@ -1,6 +1,7 @@
 import { CategoriesRepository } from '../../repositories/implementations/CategoriesRepository';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 import { inject, injectable } from 'tsyringe';
+import { AppError } from '../../../../errors/AppError';
 
 interface IRequest {
   name: string;
@@ -21,7 +22,7 @@ class CreateCategoryUseCase {
     const foundCategory = await this.categoriesRepository.findByName(name)
 
     if(foundCategory) {
-      throw new Error('You cannot create a category with the same name');
+      throw new AppError('You cannot create a category with the same name', 400);
     }
 
     await this.categoriesRepository.create({description, name})
